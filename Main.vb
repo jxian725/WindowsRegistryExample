@@ -22,7 +22,6 @@
         End If
     End Sub
 
-    Dim RegisLoc As String = "HKEY_CURRENT_USER\" + NewName
     Private Sub ButtonCreateChild_Click(sender As Object, e As EventArgs) Handles ButtonCreateChild.Click
         If TextBoxChild.Text = "" Then
             MsgBox("Please Enter Child Name")
@@ -36,6 +35,8 @@
                 MsgBox("Please Enter Child value")
                 TextBoxChild.Text = ""
             Else
+                NewName = TextBoxRName.Text
+                Dim RegisLoc As String = "HKEY_CURRENT_USER\" + NewName
                 My.Computer.Registry.SetValue(RegisLoc, TextBoxChild.Text, TextBoxChildValue.Text)
                 MsgBox("Pair Created")
             End If
@@ -52,7 +53,11 @@
                 Dim inpputval As String = TextBoxRead.Text
                 Dim inputchild As String = "HKEY_CURRENT_USER\" + TextBoxReadChild.Text
                 Dim readValue = My.Computer.Registry.GetValue(inputchild, inpputval, Nothing)
-                MsgBox("Value :" & readValue)
+                If My.Computer.Registry.GetValue(inputchild, inpputval, Nothing) Is Nothing Then
+                    MsgBox("Value does not exist.")
+                Else
+                    MsgBox("Value :" & readValue)
+                End If
             End If
         End If
     End Sub
